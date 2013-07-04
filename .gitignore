@@ -1,0 +1,9 @@
+*.aux
+*.bcf
+*.dvi
+*.log
+*.out
+*.ps
+*.run.xml
+*.pdf
+theory.md
