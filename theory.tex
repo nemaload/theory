@@ -21,5 +21,87 @@
 \pagestyle{plain}
 \thispagestyle{empty}
 
+\section{Introduction}
+
+\textsc{Imaging} can be defined as the estimation, from sensor readings, of a physical quantity that varies over some particular region of space (and possibly time). In many cases (including almost all medical imaging, except for the humble X-ray), this is a nontrivial inference problem.
+
+In the case of ``brain activity mapping,'' imaging is only one piece of the overall puzzle, which looks like this:
+
+\begin{center}
+\begin{tikzpicture}[
+every node/.style={draw=black,align=center},
+every matrix/.style={row sep=3ex,column sep=0ex},
+prod/.style={draw=none,scale=1.08,inner sep=0pt},
+fof/.style={shape=ellipse},
+choice/.style={},
+understudy/.style={shape=ellipse}
+]
+
+\begin{scope}[yshift=-10.5cm,transform canvas={scale=0.7}]
+    \matrix[draw=none] (m) {
+        & \node[fof] (model) {Estimated \\ Neural Computation \\ (Model)}; & \\
+        \node(sysid) {System \\ Identification};& \node[prod] (estcomp) {$\bigotimes$};& \node (epistemic) {Epistemic \\ Uncertainty};\\
+        & \node[fof] (esta) {Estimated \\ State \\ History}; & \\
+        \node (analysis) {Analysis};& \node[prod] (estap) {$\bigotimes$};& \node (roundoff) {Roundoff \& \\ Approximations};\\
+        \node[choice] (sensor) {Sensor};& \node[prod] (frames) {$\bigotimes$};& \node (readn) {Read \\ Noise};\\
+        \node[choice] (optics) {Optical \\ System};& \node[prod] (insplane) {$\bigotimes$};& \node (shot) {Shot \\ Noise};\\
+        \node[choice] (tracking) {Tracking \\ Stage};& \node[prod] (fluorworld) {$\bigotimes$};& \node (mechn) {Mechanical \\ Noise};\\
+        \node (immob) {Immobilization};& \node[prod] (fluorposed) {$\bigotimes$};& \node (squirm) {Worm Movement};\\
+        & \node[prod] (fluor) {$\bigotimes$};& \node (thermo) {Thermodynamic \\ Noise}; \\
+        & \node[fof] (statehist) {Measurable State \\ History}; & \\
+        \node (perturb) {Controlled \\ Perturbations};& \node[prod] (statehisp) {$\bigotimes$}; & \node (squish) {Uncontrolled \\ Environmental \\ Inputs};\\
+        \node (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}}; & \node[prod] (actualcomp) {$\bigotimes$}; &\node (stochast) {Computational \\ Stochasticity};\\
+        & \node[understudy] (neuralcomp) {Natural \\  Neural Computation}; & \\
+    };
+
+    \begin{scope}[line width=0.6pt,->,>=stealth]
+    \draw (neuralcomp) -- (actualcomp);
+    \draw (unwanted) -- (actualcomp);
+    \draw (stochast) -- (actualcomp);
+    \draw (actualcomp) -- (statehisp);
+    \draw (perturb) -- (statehisp);
+    \draw (squish) -- (statehisp);
+    \draw (statehisp) -- (statehist);
+
+    \draw (statehist) -- (fluor);
+    \draw (thermo) -- (fluor);
+    \draw (fluor) -- (fluorposed);
+    \draw (immob) -- (fluorposed);
+    \draw (squirm) -- (fluorposed);
+    \draw (fluorposed) -- (fluorworld);
+    \draw (tracking) -- (fluorworld);
+    \draw (mechn) -- (fluorworld);
+
+    \draw (fluorworld) -- (insplane);
+    \draw (optics) -- (insplane);
+    \draw (shot) -- (insplane);
+    \draw (insplane) -- (frames);
+    \draw (sensor) -- (frames);
+    \draw (readn) -- (frames);
+
+    \draw (frames) -- (estap);
+    \draw (analysis) -- (estap);
+    \draw (roundoff) -- (estap);
+    \draw (estap) -- (esta);
+    \draw (esta) -- (estcomp);
+    \draw (epistemic) -- (estcomp);
+    \draw (sysid) -- (estcomp);
+    \draw (estcomp) -- (model);
+
+    \end{scope}
+
+\end{scope}
+
+
+\end{tikzpicture}
+%\begin{tikzpicture}
+%[every node/.style={draw=black,anchor=base,font=\huge}]
+%\matrix (m)
+%{
+%\node {g}; \fill[blue] (0,0) circle (2pt); \\
+%};
+%\end{tikzpicture}
+\end{center}
+
 
 \end{document}
