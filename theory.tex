@@ -34,25 +34,29 @@ every matrix/.style={row sep=3ex,column sep=0ex},
 prod/.style={draw=none,scale=1.08,inner sep=0pt},
 fof/.style={shape=ellipse},
 choice/.style={},
+rand/.style={},
+blank/.style={draw=none},
 understudy/.style={shape=ellipse}
 ]
 
 \begin{scope}[yshift=-10.5cm,transform canvas={scale=0.7}]
     \matrix[draw=none] (m) {
-        & \node[fof] (model) {Estimated \\ Neural Computation \\ (Model)}; & \\
-        \node(sysid) {System \\ Identification};& \node[prod] (estcomp) {$\bigotimes$};& \node (epistemic) {Epistemic \\ Uncertainty};\\
-        & \node[fof] (esta) {Estimated \\ State \\ History}; & \\
-        \node (analysis) {Analysis};& \node[prod] (estap) {$\bigotimes$};& \node (roundoff) {Roundoff \& \\ Approximations};\\
-        \node[choice] (sensor) {Sensor};& \node[prod] (frames) {$\bigotimes$};& \node (readn) {Read \\ Noise};\\
-        \node[choice] (optics) {Optical \\ System};& \node[prod] (insplane) {$\bigotimes$};& \node (shot) {Shot \\ Noise};\\
-        \node[choice] (tracking) {Tracking \\ Stage};& \node[prod] (fluorworld) {$\bigotimes$};& \node (mechn) {Mechanical \\ Noise};\\
-        \node (immob) {Immobilization};& \node[prod] (fluorposed) {$\bigotimes$};& \node (squirm) {Worm Movement};\\
-        & \node[prod] (fluor) {$\bigotimes$};& \node (thermo) {Thermodynamic \\ Noise}; \\
-        & \node[fof] (statehist) {Measurable State \\ History}; & \\
-        \node (perturb) {Controlled \\ Perturbations};& \node[prod] (statehisp) {$\bigotimes$}; & \node (squish) {Uncontrolled \\ Environmental \\ Inputs};\\
-        \node (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}}; & \node[prod] (actualcomp) {$\bigotimes$}; &\node (stochast) {Computational \\ Stochasticity};\\
-        & \node[understudy] (neuralcomp) {Natural \\  Neural Computation}; & \\
+        & & & \node[fof] (model) {Estimated \\ Neural Computation \\ (Model)}; & \\
+        & & \node(sysid) {System \\ Identification};& \node[prod] (estcomp) {$\bigotimes$};& \node (epistemic) {Epistemic \\ Uncertainty};\\
+        & & & \node[fof] (esta) {Estimated \\ State \\ History}; & \\
+        & & \node (analysis) {Analysis}; & \node[prod] (estap) {$\bigotimes$};& \node (roundoff) {Roundoff \& \\ Approximations};\\
+        & & \node[fof] (sensor) {Sensor}; & \node[prod] (frames) {$\bigotimes$};& \node (readn) {Read \\ Noise};\\
+        \node[fof] (light) {Light Source}; & & \node[choice] (optics) {Optical \\ System};& \node[prod] (insplane) {$\bigotimes$};& \node (shot) {Shot \\ Noise};\\
+        & & \node[choice] (tracking) {Tracking \\ Stage};& \node[prod] (fluorworld) {$\bigotimes$};& \node (mechn) {Mechanical \\ Noise};\\
+        & \node (immob) {Immobilization}; & & \node[prod] (fluorposed) {$\bigotimes$};& \node (squirm) {Worm Movement};\\
+        & & & \node[prod] (fluor) {$\bigotimes$};& \node (thermo) {Thermodynamic \\ Noise}; \\
+        & & & \node[fof] (statehist) {Measurable State \\ History}; & \\
+        & & \node (perturb) {Controlled \\ Perturbations};& \node[prod] (statehisp) {$\bigotimes$}; & \node (squish) {Uncontrolled \\ Environmental \\ Inputs};\\
+        & & \node (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}}; & \node[prod] (actualcomp) {$\bigotimes$}; &\node (stochast) {Computational \\ Stochasticity};\\
+        & \node[prod] (geneticvar) {$\bigotimes$}; & \node[choice] (genetics) {Genetic \\ Engineering}; & \node[understudy] (neuralcomp) {Natural \\  Neural Computation}; & \node[rand] (varia) {Biological \\ Variability};\\
     };
+
+    \coordinate (arrowdrop) at ($ (varia.south)+(0,-7mm) $);
 
     \begin{scope}[line width=0.6pt,->,>=stealth]
     \draw (neuralcomp) -- (actualcomp);
@@ -60,6 +64,7 @@ understudy/.style={shape=ellipse}
     \draw (stochast) -- (actualcomp);
     \draw (actualcomp) -- (statehisp);
     \draw (perturb) -- (statehisp);
+    \draw (perturb) -- (unwanted);
     \draw (squish) -- (statehisp);
     \draw (statehisp) -- (statehist);
 
@@ -74,6 +79,7 @@ understudy/.style={shape=ellipse}
 
     \draw (fluorworld) -- (insplane);
     \draw (optics) -- (insplane);
+    \draw (optics) -- (sensor);
     \draw (shot) -- (insplane);
     \draw (insplane) -- (frames);
     \draw (sensor) -- (frames);
@@ -87,6 +93,14 @@ understudy/.style={shape=ellipse}
     \draw (epistemic) -- (estcomp);
     \draw (sysid) -- (estcomp);
     \draw (estcomp) -- (model);
+
+    \draw (genetics) -- (geneticvar);
+    \draw (varia) -- (arrowdrop) -| (geneticvar);
+    \draw (light) |- (geneticvar);
+    \draw (geneticvar) |- ($ (unwanted.west)+(0,-5pt) $);
+    \draw ($ (immob.south) + (-10pt,0) $) |- ($ (unwanted.west)+(0,5pt) $);
+    \draw (geneticvar) |- (fluor);
+    \draw (optics) -- (light);
 
     \end{scope}
 
