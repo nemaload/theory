@@ -27,33 +27,36 @@
 
 In the case of ``brain activity mapping,'' imaging is only one piece of the overall puzzle, which looks like this:
 
+\begin{figure}[p]
 \begin{center}
 \begin{tikzpicture}[
-every node/.style={draw=black,align=center},
+every node/.style={draw=black,align=center, cloud ignores aspect},
 every matrix/.style={row sep=3ex,column sep=0ex},
 prod/.style={draw=none,scale=1.08,inner sep=0pt},
 fof/.style={shape=ellipse},
 choice/.style={},
-rand/.style={},
+unk/.style={shape=cloud},
 blank/.style={draw=none},
 understudy/.style={shape=ellipse}
 ]
+\node[draw=none] {\color{white}:};
 
-\begin{scope}[yshift=-10.5cm,transform canvas={scale=0.7}]
+\begin{scope}[xshift=-2cm,transform canvas={scale=0.78}]
+%\begin{scope}[yshift=-14.5cm,font=\relsize{0.5}]
     \matrix[draw=none] (m) {
         & & & \node[fof] (model) {Estimated \\ Neural Computation \\ (Model)}; & \\
-        & & \node(sysid) {System \\ Identification};& \node[prod] (estcomp) {$\bigotimes$};& \node (epistemic) {Epistemic \\ Uncertainty};\\
+        & & \node(sysid) {System \\ Identification};& \node[prod] (estcomp) {$\bigotimes$};& \node[unk] (epistemic) {Epistemic \\ Uncertainty};\\
         & & & \node[fof] (esta) {Estimated \\ State \\ History}; & \\
-        & & \node (analysis) {Analysis}; & \node[prod] (estap) {$\bigotimes$};& \node (roundoff) {Roundoff \& \\ Approximations};\\
-        & & \node[fof] (sensor) {Sensor}; & \node[prod] (frames) {$\bigotimes$};& \node (readn) {Read \\ Noise};\\
-        \node[fof] (light) {Light Source}; & & \node[choice] (optics) {Optical \\ System};& \node[prod] (insplane) {$\bigotimes$};& \node (shot) {Shot \\ Noise};\\
-        & & \node[choice] (tracking) {Tracking \\ Stage};& \node[prod] (fluorworld) {$\bigotimes$};& \node (mechn) {Mechanical \\ Noise};\\
-        & \node (immob) {Immobilization}; & & \node[prod] (fluorposed) {$\bigotimes$};& \node (squirm) {Worm Movement};\\
-        & & & \node[prod] (fluor) {$\bigotimes$};& \node (thermo) {Thermodynamic \\ Noise}; \\
+        & & \node[choice] (analysis) {Analysis}; & \node[prod] (estap) {$\bigotimes$};& \node[unk] (roundoff) {Roundoff \& \\ Approximations};\\
+        & & \node[fof] (sensor) {Sensor}; & \node[prod] (frames) {$\bigotimes$};& \node[unk] (readn) {Read \\ Noise};\\
+        \node[fof] (light) {Light Source}; & & \node[choice] (optics) {Optical \\ System};& \node[prod] (insplane) {$\bigotimes$};& \node[unk] (shot) {Shot \\ Noise};\\
+        & & \node[choice] (tracking) {Tracking \\ Stage};& \node[prod] (fluorworld) {$\bigotimes$};& \node[unk] (mechn) {Mechanical \\ Noise};\\
+        & \node[choice] (immob) {Immobilization}; & & \node[prod] (fluorposed) {$\bigotimes$};& \node[unk] (squirm) {Worm Movement};\\
+        & & & \node[prod] (fluor) {$\bigotimes$};& \node[unk] (thermo) {Thermodynamic \\ Noise}; \\
         & & & \node[fof] (statehist) {Measurable State \\ History}; & \\
-        & & \node (perturb) {Controlled \\ Perturbations};& \node[prod] (statehisp) {$\bigotimes$}; & \node (squish) {Uncontrolled \\ Environmental \\ Inputs};\\
-        & & \node (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}}; & \node[prod] (actualcomp) {$\bigotimes$}; &\node (stochast) {Computational \\ Stochasticity};\\
-        & \node[prod] (geneticvar) {$\bigotimes$}; & \node[choice] (genetics) {Genetic \\ Engineering}; & \node[understudy] (neuralcomp) {Natural \\  Neural Computation}; & \node[rand] (varia) {Biological \\ Variability};\\
+        & & \node[choice] (perturb) {Controlled \\ Perturbations};& \node[prod] (statehisp) {$\bigotimes$}; & \node[unk] (squish) {Uncontrolled \\ Environmental \\ Inputs};\\
+        & & \node[fof] (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}}; & \node[prod] (actualcomp) {$\bigotimes$}; &\node[unk] (stochast) {Computational \\ Stochasticity};\\
+        & \node[prod] (geneticvar) {$\bigotimes$}; & \node[choice] (genetics) {Genetic \\ Engineering}; & \node[understudy] (neuralcomp) {Natural \\  Neural Computation}; & \node[unk] (varia) {Biological \\ Variability};\\
     };
 
     \coordinate (arrowdrop) at ($ (varia.south)+(0,-7mm) $);
@@ -108,14 +111,9 @@ understudy/.style={shape=ellipse}
 
 
 \end{tikzpicture}
-%\begin{tikzpicture}
-%[every node/.style={draw=black,anchor=base,font=\huge}]
-%\matrix (m)
-%{
-%\node {g}; \fill[blue] (0,0) circle (2pt); \\
-%};
-%\end{tikzpicture}
 \end{center}
+\end{figure}
 
 
 \end{document}
+
