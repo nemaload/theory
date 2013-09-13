@@ -25,10 +25,13 @@
 
 \textsc{Imaging} can be defined as the estimation, from sensor readings, of a physical quantity that varies over some particular region of space (and possibly time). In many cases (including almost all medical imaging, except for the humble X-ray), this is a nontrivial inference problem.
 
-In the case of ``brain activity mapping,'' imaging is only one piece of the overall puzzle, which looks like this:
+In the case of ``brain activity mapping,'' imaging is only one piece of the overall puzzle, which is illustrated in \autoref{fig:puzzle}.
 
 \begin{figure}[p]
+\caption{An overview of variables involved in an electro-optical measurement of neural computation.}
+\label{fig:puzzle}
 \begin{center}
+\adjustbox{lap=-4cm,scale=0.72}{
 \begin{tikzpicture}[
 every node/.style={draw=black,align=center, cloud ignores aspect},
 every matrix/.style={row sep=3ex,column sep=0ex},
@@ -41,7 +44,6 @@ understudy/.style={shape=ellipse}
 ]
 \node[draw=none] {\color{white}:};
 
-\begin{scope}[xshift=-2cm,transform canvas={scale=0.78}]
 %\begin{scope}[yshift=-14.5cm,font=\relsize{0.5}]
     \matrix[draw=none] (m) {
         & & & \node[fof] (model) {Estimated \\ Neural Computation \\ (Model)}; & \\
@@ -100,17 +102,14 @@ understudy/.style={shape=ellipse}
     \draw (genetics) -- (geneticvar);
     \draw (varia) -- (arrowdrop) -| (geneticvar);
     \draw (light) |- (geneticvar);
-    \draw (geneticvar) |- ($ (unwanted.west)+(0,-5pt) $);
     \draw ($ (immob.south) + (-10pt,0) $) |- ($ (unwanted.west)+(0,5pt) $);
+    \draw ($ (geneticvar |- unwanted) + (0,-5pt) $) -- ($ (unwanted.west)+(0,-5pt) $);
     \draw (geneticvar) |- (fluor);
     \draw (optics) -- (light);
-
     \end{scope}
 
-\end{scope}
-
-
 \end{tikzpicture}
+}
 \end{center}
 \end{figure}
 
