@@ -51,6 +51,7 @@
 \usepackage{tabu}
 \usepackage{fancyhdr}
 \usepackage{titling}
+\usepackage{pdflscape}
 \usepackage{authblk}
 \usepackage[overload]{ragged2e}
 \usepackage[section,above]{place ins}
@@ -94,6 +95,7 @@
 %\usepackage{marvosym}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{mathtools}
 %\usepackage{cancel}
 \usepackage[binary-units=true]{siunitx}
 \DeclareSIUnit\Molar{\textsc{m}}
@@ -120,7 +122,11 @@
 \usepackage{tikz}
 %\usepackage{pgfplots}
 
-\usetikzlibrary{arrows,shapes,shapes.symbols,calc,positioning,matrix,chains}
+%\usetikzlibrary{arrows,shapes,shapes.symbols,calc,positioning,matrix,chains}
+\usetikzlibrary{arrows,arrows.new,shapes.geometric,shapes.symbols,matrix,calc,decorations.pathmorphing,decorations.pathreplacing,decorations.markings,decorations.shapes,fit}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
 
 \usepackage{adjustbox}
 %\usepackage{eqparbox}

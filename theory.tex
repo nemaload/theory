@@ -1,7 +1,11 @@
 \input{preamble}
+\pgfmathsetseed{519}
+\newcommand{\myprod}{\color{purple!60!blue}\hskip0.08pt$\bigotimes$}
+\colorlet{erred}{red!75!black!75!white}
+\colorlet{modelc}{cyan!64!blue}
 %\addbibresource{neuro_theory.bib}
 
-\title{Information-Theoretic and Numerical-Methodological Considerations for Brain Activity Mapping Experimental Design}
+\title{Information-Theoretic, Probabilistic, and Algorithmic Considerations for the Design of Brain Activity Imaging Experiments}
 
 %\author[1,2]{\ \lift{$\jointfirst\,$}Adam~H.~Marblestone\rlap{,}}
 \author[1,2]{David~A.~Dalrymple}
@@ -27,92 +31,257 @@
 
 In the case of ``brain activity mapping,'' imaging is only one piece of the overall puzzle, which is illustrated in \autoref{fig:puzzle}.
 
+%The neural computation should be estimated as a stochastic differential equation, of the type $\mbox{Phase Space} \rightarrow \left(\mbox{$\sigma$-Algebra of Tangent Space} \rightarrow \mathbb{R}\right)$.
+
+%Neural Computation: $X_{\mbox{ph}} \rightarrow \left( \sigma(X_{\mbox{ph}}^*) \rightarrow \mathbb{R} \right)$ \\
+
+\begin{landscape}
 \begin{figure}[p]
 \caption{An overview of variables involved in an electro-optical measurement of neural computation.}
 \label{fig:puzzle}
 \begin{center}
-\adjustbox{lap=-4cm,scale=0.72}{
-\begin{tikzpicture}[
-every node/.style={draw=black,align=center, cloud ignores aspect},
-every matrix/.style={row sep=3ex,column sep=0ex},
-prod/.style={draw=none,scale=1.08,inner sep=0pt},
-fof/.style={shape=ellipse},
-choice/.style={},
-unk/.style={shape=cloud},
-blank/.style={draw=none},
-understudy/.style={shape=ellipse}
-]
-\node[draw=none] {\color{white}:};
+\adjustbox{lap=0cm,scale=1.75}{
+    \begin{tikzpicture}[
+    line width=0.35pt,
+    every node/.style={draw=black,align=center, cloud ignores aspect,line width=0.2pt,rounded corners=0.8pt,scale=0.34},
+    every matrix/.style={row sep=3ex,column sep=2pt},
+    every fit/.style={sharp corners,draw=none},
+    prod/.style={scale=1.22,inner ysep=0.4pt,inner xsep=0.4pt,line width=0.001pt,draw=none},
+    fof/.style={draw=blue!60!green,fill=white},
+    choice/.style={fill=white},
+    math/.style={draw=yellow,line width=0.42},
+    unk/.style={color=red!75!black,draw=red!50!black!20!white,fill=white},
+    sq/.style={draw=green!60!black!20!white,fill=white},
+    blank/.style={draw=none},
+    understudy/.style={color=blue!80!white!80!black,font=\bfseries,line width=0.32pt,fill=white},
+    sh/.style={color=blue!60!green,font=\bfseries},
+    shd/.style={color=blue!60!green!#1!erred},
+    varia/.style={line width=0.24,color=red!60!black!95!white},
+    proj/.style={line width=0.43,blue!42!green!42!white, dash pattern=on 2pt off 2pt,postaction={draw,blue!66!green!50!white,dash pattern=on 2pt off 2pt,dash phase=2pt},-},
+    proj2/.style={line width=0.43,black!25!white, dash pattern=on 2pt off 2pt,postaction={draw,black!40!white,dash pattern=on 2pt off 2pt,dash phase=2pt},-},
+    rbdash/.style={line width=0.5,draw=red!85!black, dash pattern=on 3pt off 3pt,postaction={draw,black,dash pattern=on 3pt off 3pt,dash phase=3pt}},
+    control/.style={double=white,line width=0.3pt},
+    trycontrol/.style={decorate,decoration={saw,amplitude=0.8pt,segment length=3pt,post length=5pt,pre length=1pt}},
+    errarr/.style={color=erred},
+    opterr/.style={double=red!95!black!75!white,double distance between line centers=0.6pt,line width=0.3pt},
+    photon/.style={decorate,decoration={snake,amplitude=0.8pt,segment length=2.8pt,post length=4pt,pre length=1pt},line width=0.33pt},
+    readn/.style={decorate,decoration={random steps,amplitude=0.8pt,segment length=1.3pt,post length=4pt,pre length=1pt}},
+    thermo/.style={decorate,decoration={random steps,amplitude=0.16pt,segment length=1pt,post length=2pt},line width=0.24pt},
+    mechn/.style={decorate,decoration={zigzag,amplitude=0.8pt,segment length=5pt,post length=4pt,pre length=1pt},line width=0.26},
+    squirm/.style={decorate,decoration={random steps,amplitude=1.5pt,segment length=5pt,post length=4pt,pre length=1pt}},
+    roundoff/.style={decorate,decoration={bent},line width=0.29},
+    episteme/.style={double=red!80!black!70!white,double distance between line centers=1.7pt,postaction={color=yellow,decorate},decoration={markings,mark=between positions 0.1 and 0.9 step 1ex with {\node[draw=none] {?};}},arrow head=4.9pt,>=stealth new},
+    thought/.style={draw=black!60!yellow,double=yellow,>=stealth new,arrow head=4pt},
+    understudy_arr/.style={color=blue!80!white!80!black},
+    sigchain/.style={color=blue!80!white!80!black,>=latex'},
+    sidechain/.style={color=blue!80!white!80!black,>=latex',line width=0.3},
+    behavior/.style={-,line width=1.0pt,color={green!60!black!13!white},postaction={decorate,decoration={shape backgrounds,pre length=1.5pt, post length=1.5pt, shape=isosceles triangle, shape start height=1.0pt, shape start width=2.4pt, shape sep={4.54pt, between centers}}, line width=0.0pt,draw=none,fill=green!60!black!45!white}},
+    feedback/.style={-,line width=1.0pt,color={green!20!blue!60!black!13!white},postaction={decorate,decoration={shape backgrounds,pre length=1.5pt, post length=1.5pt, shape=isosceles triangle, shape start height=1.0pt, shape start width=2.4pt, shape sep={5.1pt, between centers}}, line width=0.0pt,draw=none,fill=green!20!blue!60!black!45!white}},
+    mfeedback/.style={-,line width=1.4pt,color={red!40!blue!70!black!13!white},postaction={decorate,decoration={shape backgrounds,pre length=1.5pt, post length=1.5pt, shape=isosceles triangle, shape start height=1.4pt, shape start width=2.4pt, shape sep={5.1pt, between centers}}, line width=0.0pt,draw=none,fill=red!40!blue!70!black!45!white}},
+    ]
+            \begin{pgfonlayer}{foreground}
+            \matrix[draw=none,ampersand replacement=\t] (m) at (6.72,0) {
+                \t \t \t[4.4pt] \coordinate (nex3); \\[-8pt]
+                \t \t \t \t[15pt] \t[-6pt] \t[6pt] \t \t \node[fof] (light) {Light Source}; \t \t[12pt] \t \t[9pt]\\[-9pt]
+                \t \node[prod] (geneticvar) {\myprod}; \t \t \t \t \t \t \t \t \t \t \coordinate (nex2); \t \node[choice,math] (learner) {Active \\ Learning}; \t \node[prod] (expdes) {\myprod};  \\[-10pt]
+                \t \t \t \t \t \t \coordinate (nex); \t \t \t \t \node[choice,math] (analysis) {Analysis}; \t \t  \t  \\[-11.7pt]
+                \t \node[choice] (genetics) {Genetic \\ Engineering}; \t \node[fof] (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}};\t \node[choice,opacity=0.5,draw=gray,rbdash,line width=0.27] (perturb) {Controlled \\ Perturbations}; \t \t  \node[fof,fill=white,rbdash,line width=0.24] (indicator) {Physical \\ Indicator};  \t \node[choice] (immob) {Immobilization}; \t \node[choice] (tracking) {Tracking \\ Stage}; \t \node[choice,draw=blue!60!green!85!white] (optics) {Optical \\ System};\t \node[fof] (sensor) {Sensor};\t\t \node[fof] (estamove) {Estimated \\ Specimen \\ Movement};  \t \node[choice,math] (sysid) {System \\ Identification}; \\[-2.8pt]
+                \t \node[understudy] (neuralcomp) {Abstract \\  Neural \\ Computation};
+                \t \node[prod] (actualcomp) {\myprod};
+                \t \node[prod] (statehisp) {\myprod};
+                \t \node[sh,fof,label={[align=flush center,text width=77pt]below:(Presumed one time series per each neuron.)}] (statehist) {Observable State \\ History};
+                \t \node[prod] (fluor) {\myprod};
+                \t \node[prod] (fluorposed) {\myprod};
+                \t \node[prod] (fluorworld) {\myprod};
+                \t \node[prod] (insplane) {\myprod};
+                \t \node[prod] (frames) {\myprod};
+                \t \node[prod] (estap) {\myprod};
+                \t \node[fof,font=\bfseries,color=blue!65!green,fill=white] (esta) {Estimated \\ State \\ History};
+                \t \node[prod] (estcomp) {\myprod};
+                \t \node[fof,font=\bfseries,color=modelc,fill=white] (model) {Estimated \\ Neural Computation \\ (Model)};\\[-14pt]
+                \t \node[unk] (varia) {Biological \\ Variability};
+                \t\node[unk] (stochast) {Neural \\ Stochasticity};
+                \t \node[unk] (squish) {Uncontrolled \\ Environmental \\ Inputs};
+                \t
+                %\t \node[unk] (thermo) {Thermodynamic \\ Noise};
+                \t \node[unk] (autofluor) {Autofluorescence \\ / Background};
+                \t \node[unk,sq] (squirm) {Specimen \\ Movement};
+                \t \node[unk] (mechn) {Mechanical \\ Noise};
+                \t \node[unk] (shot) {Shot \\ Noise};
+                \t \node[unk] (readn) {Read \\ Noise};
+                \t \node[unk] (roundoff) {Roundoff \& \\ Approximations};
+                \t
+                \t \node[unk,draw=yellow!70!gray] (epistemic) {Epistemic \\ Uncertainty};\\
+            };
+            \end{pgfonlayer}
 
-%\begin{scope}[yshift=-14.5cm,font=\relsize{0.5}]
-    \matrix[draw=none] (m) {
-        & & & \node[fof] (model) {Estimated \\ Neural Computation \\ (Model)}; & \\
-        & & \node(sysid) {System \\ Identification};& \node[prod] (estcomp) {$\bigotimes$};& \node[unk] (epistemic) {Epistemic \\ Uncertainty};\\
-        & & & \node[fof] (esta) {Estimated \\ State \\ History}; & \\
-        & & \node[choice] (analysis) {Analysis}; & \node[prod] (estap) {$\bigotimes$};& \node[unk] (roundoff) {Roundoff \& \\ Approximations};\\
-        & & \node[fof] (sensor) {Sensor}; & \node[prod] (frames) {$\bigotimes$};& \node[unk] (readn) {Read \\ Noise};\\
-        \node[fof] (light) {Light Source}; & & \node[choice] (optics) {Optical \\ System};& \node[prod] (insplane) {$\bigotimes$};& \node[unk] (shot) {Shot \\ Noise};\\
-        & & \node[choice] (tracking) {Tracking \\ Stage};& \node[prod] (fluorworld) {$\bigotimes$};& \node[unk] (mechn) {Mechanical \\ Noise};\\
-        & \node[choice] (immob) {Immobilization}; & & \node[prod] (fluorposed) {$\bigotimes$};& \node[unk] (squirm) {Worm Movement};\\
-        & & & \node[prod] (fluor) {$\bigotimes$};& \node[unk] (thermo) {Thermodynamic \\ Noise}; \\
-        & & & \node[fof] (statehist) {Measurable State \\ History}; & \\
-        & & \node[choice] (perturb) {Controlled \\ Perturbations};& \node[prod] (statehisp) {$\bigotimes$}; & \node[unk] (squish) {Uncontrolled \\ Environmental \\ Inputs};\\
-        & & \node[fof] (unwanted) {Unwanted \\ Perturbations \\ \textit{(e.g. Toxicity)}}; & \node[prod] (actualcomp) {$\bigotimes$}; &\node[unk] (stochast) {Computational \\ Stochasticity};\\
-        & \node[prod] (geneticvar) {$\bigotimes$}; & \node[choice] (genetics) {Genetic \\ Engineering}; & \node[understudy] (neuralcomp) {Natural \\  Neural Computation}; & \node[unk] (varia) {Biological \\ Variability};\\
-    };
+            \coordinate (arrowdrop) at ($ (varia.west)+(-3.9mm,0) $);
 
-    \coordinate (arrowdrop) at ($ (varia.south)+(0,-7mm) $);
+            \begin{scope}[line width=0.4pt,->,>=stealth new]
+            \draw [understudy_arr] (neuralcomp) -- (actualcomp);
+            \draw[varia] (unwanted) -- (actualcomp);
+            \draw (stochast) -- (actualcomp);
+            \draw[sigchain] (actualcomp) -- node[below,pos=0.416,draw=none,scale=0.9] {``Actual'' Neural\\Computation} (statehisp);
+            \draw[trycontrol,color=orange!40!white] (perturb) -- (statehisp);
+            \draw[color=black!40!white] (perturb) -- (unwanted);
+            \draw[varia] (squish) -- (statehisp);
+            \draw[sigchain,sh,-,line width=0.66pt] (statehisp) -- (statehist);
 
-    \begin{scope}[line width=0.6pt,->,>=stealth]
-    \draw (neuralcomp) -- (actualcomp);
-    \draw (unwanted) -- (actualcomp);
-    \draw (stochast) -- (actualcomp);
-    \draw (actualcomp) -- (statehisp);
-    \draw (perturb) -- (statehisp);
-    \draw (perturb) -- (unwanted);
-    \draw (squish) -- (statehisp);
-    \draw (statehisp) -- (statehist);
+            \draw[sigchain,sh,line width=0.66pt] (statehist) -- (fluor);
+            \draw[errarr,arrow head=2.5pt] (autofluor) -- (fluor);
+            \draw[errarr,arrow head=2.5pt] (autofluor.east) -- (fluorposed);
+            \draw[trycontrol,draw=black!64!white,opacity=0.6] ($ (immob.south) + (-5pt,0) $) .. controls ($ (fluorposed.west) + (-17pt,6pt) $) and ($ (squirm.north) + (-1pt,15pt) $)  .. ($ (squirm.north) + (-1pt,0) $);
+            \draw[sigchain,shd=90,line width=0.63pt] (fluor) -- node[above=1.7pt,draw=none,text width=90pt,align=flush center,pos=0.44,scale=0.97] {Signal in\ldots} node[below,draw=none,text width=60pt,align=flush center,pos=0.42] {\small $f(u,v,w)$:  \textbf{Brain} Coordinates} (fluorposed);
+            \draw[squirm,errarr] ($ (squirm.north) + (2pt,0) $) -- (fluorposed);
+            \draw[sigchain,shd=70,line width=0.53pt] (fluorposed) -- node[below,draw=none,text width=60pt,align=flush center] { {\tiny $f(x-x_0,y-y_0,z-z_0)$:} \textbf{Relative} Coordinates} (fluorworld);
+            \draw[control] (tracking) -- (fluorworld);
+            \draw[mechn,errarr] (mechn) -- (fluorworld);
 
-    \draw (statehist) -- (fluor);
-    \draw (thermo) -- (fluor);
-    \draw (fluor) -- (fluorposed);
-    \draw (immob) -- (fluorposed);
-    \draw (squirm) -- (fluorposed);
-    \draw (fluorposed) -- (fluorworld);
-    \draw (tracking) -- (fluorworld);
-    \draw (mechn) -- (fluorworld);
+            \draw[behavior] ($ (statehisp) + (15.5pt,-0.2pt) $) |- node[pos=0.75,above,draw=none] (behl) {\color{green!60!black!58!white}\textsc{Motor Command}} ($ (squirm.south) + (-3pt,-15pt) $) -- ($ (squirm.south) + (-3pt,0) $);
+            \draw[behavior] ($ (squirm.south) + (2.3pt,0) $) -- ++(0pt,-20.3pt) node[coordinate] (nex5) {} -| node[pos=0.25,below,draw=none] (prol) {\color{green!60!black!48!white}\textsc{Proprioception}} ($ (squish.south)!(statehisp)!(squish.south east) + (10pt,0) $);
+            \coordinate (nex4) at ($ (squish.south) + (15.5pt,0) $);
+            \coordinate (nex6) at ($ (squish.south) + (10pt,-12pt) $);
+            \begin{scope}[color=green!60!black!54!white,->,line width=0.25pt,arrow head=2.2pt]
+                \draw ($ (behl.mid west) + (0,0.38pt) $) -- ++(-6.5pt,0) ($ (behl.mid east) + (0,0.38pt) $) -- ++(7pt,0);
+                \draw ($ (prol.mid east) + (0,0.38pt) $) -- ++(7.5pt,0) ($ (prol.mid west) + (0,0.38pt) $) -- ++(-8pt,0);
+            \end{scope}
 
-    \draw (fluorworld) -- (insplane);
-    \draw (optics) -- (insplane);
-    \draw (optics) -- (sensor);
-    \draw (shot) -- (insplane);
-    \draw (insplane) -- (frames);
-    \draw (sensor) -- (frames);
-    \draw (readn) -- (frames);
+            \draw [sigchain,shd=60,line width=0.49pt] (fluorworld) -- node[below,draw=none,text width=60pt,align=center,pos=0.45,scale=0.95] { $f(x,y,z)$: \textbf{Absolute} Coordinates} (insplane);
+            \draw [opterr] (optics) -- (insplane);
+            \draw [proj] (optics) -- (sensor);
+            \draw [photon,errarr] (shot) -- (frames);
+            \draw [sigchain,shd=40,line width=0.33pt] (insplane) -- node[above=2pt,draw=none,text width=50pt,align=center,pos=0.46] {$f(x_s,y_s)$: \textbf{Sensor} Coordinates} (frames);
+            \draw [opterr] (sensor) -- (frames);
+            \draw [readn,errarr] (readn) -- (frames);
 
-    \draw (frames) -- (estap);
-    \draw (analysis) -- (estap);
-    \draw (roundoff) -- (estap);
-    \draw (estap) -- (esta);
-    \draw (esta) -- (estcomp);
-    \draw (epistemic) -- (estcomp);
-    \draw (sysid) -- (estcomp);
-    \draw (estcomp) -- (model);
+            \draw [sigchain,shd=30, line width=0.24pt] (frames) -- node[below,draw=none,text width=40pt,align=center,pos=0.215] {$f(i,j)$: \textbf{Pixels}} (estap);
+            \draw [thought] (analysis) -- (estap);
+            \draw [roundoff,errarr] (roundoff) -- (estap);
+            \draw [sigchain,shd=90] (estap) -- (esta);
+            \draw [sidechain,shd=95] ($ (estap.east)!0.45!(esta.west) $) |- (estamove);
+            \draw [sigchain,shd=90] (esta) -- (estcomp);
+            \draw[episteme] (epistemic) -- (estcomp);
+            \draw [thought] (sysid) -- (estcomp);
+            \draw [sigchain] (estcomp) -- (model);
 
-    \draw (genetics) -- (geneticvar);
-    \draw (varia) -- (arrowdrop) -| (geneticvar);
-    \draw (light) |- (geneticvar);
-    \draw ($ (immob.south) + (-10pt,0) $) |- ($ (unwanted.west)+(0,5pt) $);
-    \draw ($ (geneticvar |- unwanted) + (0,-5pt) $) -- ($ (unwanted.west)+(0,-5pt) $);
-    \draw (geneticvar) |- (fluor);
-    \draw (optics) -- (light);
-    \end{scope}
+            \draw [thought] (learner) -- (expdes);
+            \draw [color=modelc] (model) -- (expdes);
+            \draw[mfeedback] (expdes) |- node[pos=0.75,above,draw=none] (expctrl) {\color{red!40!blue!70!black!75!white}\textsc{Experimental Design}}  ($ (nex3) + (-3pt,0) $) -- ($ (perturb.north) + (-4pt,0) $);
+            \begin{scope}[color=red!40!blue!70!black!75!white,->,line width=0.25pt,arrow head=2.2pt]
+                \draw ($ (expctrl.mid east) + (0,0.38pt) $) -- ++(7.2pt,0) ($ (expctrl.mid west) + (0,0.38pt) $) -- ++(-8pt,0);
+            \end{scope}
 
-\end{tikzpicture}
+            \draw[feedback] (estamove) -- (nex2) -| node[pos=0.284,above,draw=none] (ctrl) {\color{green!20!blue!60!black!45!white}\textsc{Control}} ($ (tracking.north) + (-3pt,0) $);
+            \draw[feedback] ($ (tracking.north) + (3pt,0) $) |- node[pos=0.828,below,draw=none] (fbak) {\color{green!20!blue!60!black!45!white}\textsc{Feedback}} ($ (estap.west) + (-9pt,40.7pt) $) -- ++(0,-40.5pt);
+            \begin{scope}[color=green!20!blue!60!black!45!white,->,line width=0.25pt,arrow head=2.2pt]
+                \draw ($ (fbak.mid west) + (0,0.38pt) $) -- ++(-7pt,0) ($ (fbak.mid east) + (0,0.38pt) $) -- ++(7pt,0);
+                \draw ($ (ctrl.mid east) + (0,0.38pt) $) -- ++(7.2pt,0) ($ (ctrl.mid west) + (0,0.38pt) $) -- ++(-7.4pt,0);
+            \end{scope}
+
+            \draw (genetics) -- (geneticvar);
+            \draw[densely dotted] (varia) -- (neuralcomp);
+            \draw[varia] (varia) -| (arrowdrop) |- (geneticvar);
+            \draw[rbdash,line width=0.28] (light) -| (geneticvar);
+            \draw[proj2] (immob.north) -- (nex) -| ($ (perturb.north) + (4pt,0) $);
+            \draw [rbdash] ($ (geneticvar -| unwanted) $) -- (unwanted.north);
+            \draw [rbdash,opacity=0.4] ($ (geneticvar -| perturb) $) -- (perturb.north);
+            \draw [rbdash] (geneticvar) -| (fluor);
+            \draw [proj] (optics) -- (light);
+            \draw [color=yellow,-,line width=0.26] (learner) -- (sysid) |- (analysis);
+        
+            \coordinate (anacorner) at (ctrl -| analysis);
+            \coordinate (anacorner2) at ($ (tracking.north) + (-3pt,18pt) $);
+            \coordinate (leacorner) at ($(perturb.south west)!(nex3)!(perturb.north west) $);
+            \end{scope}
+
+
+        \begin{pgfonlayer}{background}
+        \begin{scope}[every node/.style={fill=black!6!white!92!blue!60!white}]
+            \node[fit=(neuralcomp.north west) (squish.south east) (nex4)] (nnn1) {};
+            \node[fit=(behl.center) (prol.center) (nex5) (nex6)] (nnn2) {};
+            \node[fit=(nnn2.south west) (nnn1.north east),inner sep=0pt] {};
+            %\node[fit=(nex6) (nex5) ] {};
+        \end{scope}
+        \begin{scope}[every node/.style={fill=black!14!white!92!orange}]
+            \node[fit=($ (statehist.west)!0.05!(statehisp.east) $) (indicator.north west) (autofluor.south west) (sensor.north east) (readn.south east) ($ (frames.east)!0.45!(estap.west) $)] {};
+            %\node[fit=(light.north west) (light.north east) (optics.south)] {};
+        \end{scope}
+        \begin{scope}[every node/.style={fill=black!6!white}]
+            \node[fit=(nex2) (roundoff.south west) (estamove.east) (anacorner)] {};
+            \node[fit=(anacorner) (fbak.base west) (anacorner2)] {};
+        \end{scope}
+        \begin{scope}[every node/.style={fill=black!13!white}]
+            \node[fit=(model.east) (sysid.north west) (epistemic.south west) ] {};
+        \end{scope}
+        \begin{scope}[every node/.style={fill=black!22!white}]
+            \node[fit=($ (sysid.south west)!(learner.south west)!(sysid.north west) $) (expdes.east) ($ (expdes.south)!(expctrl)!(expdes.north) $)] {};
+            \node[fit=($ (expdes.south east)!(expctrl)!(expdes.north east) $) (leacorner) ] {};
+            \node[fit=(leacorner) (perturb.south west) (perturb.south east)] {};
+        \end{scope}
+        \end{pgfonlayer}
+
+    \end{tikzpicture}
 }
 \end{center}
 \end{figure}
+\end{landscape}
 
+
+Let us focus on the imaging problem for now.
+
+\subsection{Forward Model}
+
+\subsubsection{Emission: from Discrete Signals to Fluorescence in Cartesian Space}
+
+Here we begin with an
+``{\color{blue!60!green}Observable State History},'' presumed to consist of one
+time-varying signal for each neuron. We define $\mathcal{S} \in
+\left[C(\Re_{\ge 0})\right]^n$ such that $\mathcal{S}_i(t)$ are these
+time-varying signals. Next, the Physical Indicator associates each point in
+$(0,1)^3$ (the specimen coordinate system) with a single such time series, multiplied by a factor (proportional to the local density of emitted photon flux) and convolved
+with characteristic time behavior: $\mathcal{P} \in
+C\!\left[(0,1)^3,\bigvee_{i=0}^{n-1} \Re_{\ge 0}\right] \times
+C^\infty_C(\Re_{\ge 0})$, such that $f_0(u,v,w) = \left(\mathcal{S} \cdot \mathcal{P}_0(u,v,w) \right) \ast \mathcal{P}_1$, i.e. $f_0 = \left(\mathcal{P}_1 \,\ast\right) \circ \left(\mathcal{S} \, \cdot\right) \circ \mathcal{P}_0$. We then add in time-invariant background, $\mathcal{B}_0 \in C\left[(0,1)^3,\Re_{\ge 0}\right]$, such that $f_b(u,v,w)(t)=f_0(u,v,w)(t)+\mathcal{B}_0(u,v,w)$, or simply $f_b = f_0 + \mathcal{B}_0$.
+Next, the Specimen Movement induces a time-dependent embedding of the unit $(u,v,w)$ cube (considered to parameterize the anterior-posterior, dorsal-ventral, and left-right axes of the specimen) into ``relative'' coordinates (i.e. a Cartesian coordinate system referenced to the specimen-holder). We define $\mathcal{Q} \in C\left[\Re_{\geq 0}, C^1\left[(0,1)^3,\Re^3\right]\right]$. Now, for any bounded
+subset $S \subset (0,1)^3$, we want $\int_S f_b = \int_{\mathcal{Q}(t)(S)} f_1$. By the change of variables theorem,
+\[\int_{\mathcal{Q}(t)(S)} f_1 = \int_S \left(f_1 \circ \mathcal{Q}(t)\right) \left|\det D\mathcal{Q}(t)\right|\]
+\[\frac{1}{\left|\det D\mathcal{Q}(t)\right|} f_b = f_1 \circ \mathcal{Q}(t) \]
+\[f_1(x,y,z) = \begin{dcases} \frac{1}{\left|\det D\mathcal{Q}(t)\right|} f_b \circ \mathcal{Q}(t)^{-1} & \mbox{if } (x,y,z) \in \mathcal{Q}(t)\left((0,1)^3\right) \\ 0 & \mbox{otherwise} \end{dcases}\]
+Finally, we add in another time-invariant background, this one fixed in $(x,y,z)$ space, $\mathcal{B}_1 \in C\left[\Re^3,\Re_{\geq 0}\right]$ with $f_2 = f_1 + \mathcal{B}_1$. The expanded equation for fluorescence in specimen-holder coordinates is:
+\[f_2(x,y,z)(t) = \mathcal{B}_1(x,y,z) + \begin{dcases} \dfrac{\mathcal{B}_0(u,v,w) + \int_{-\infty}^{\infty} d\tau \mathcal{P}_1(t-\tau) \left( \mathcal{S}(\tau) \cdot \mathcal{P}_0(u,v,w)\right) }{\left|\det D\mathcal{Q}(t)(u,v,w)\right|} & \mbox{if } (x,y,z) = \mathcal{Q}(t)(u,v,w) \mbox{, } (u,v,w)\in(0,1)^3 \\ 0 & \mbox{otherwise}\end{dcases}\]
+
+\subsubsection{Imaging: from Fluorescence to Sensor Intensity}
+
+The position and orientation of the specimen-holder with respect to the optical system are characterized by $\mathcal{T} \in C\!\left[\Re_{\ge 0}, \Re^3 \times SO(3)\right]$, such that $f_r\left(\mathcal{T}_1(t) \vec{x} - \mathcal{T}_0(t)\right)(t) = f_2(\vec{x})(t) $. We may write $\mathcal{T}_1(t) \vec{x} - \mathcal{T}_0(t)$ as $\mathcal{T}(t)(\vec{x})$ or simply $\vec{r}$, and the inverse $\mathcal{T}_1(t)^{-1} ( \vec{r} + \mathcal{T}_0(t) )$ as $\mathcal{T}^{-1}(t)(\vec{r})$, so that $f_r(\vec{r})(t) = f_2(\mathcal{T}^{-1}(t)(\vec{r}))(t)$.
+
+The input and output intensities of any passive optical system are related by a Fredholm integral equation:
+\[f_s(\vec{s})(t) = \int d\vec{r}\,K(\vec{r},\vec{s})\,f_r(\vec{r})(t)\]
+We also consider active optical systems, which we model using a time-dependent Fredholm kernel:
+\[f_s(\vec{s})(t) = \int d\vec{r}\,K(\vec{r},\vec{s},t)\,f_r(\vec{r})(t)\]
+
+The expanded equation for sensor intensity in a generic active optical system is:
+\[f_s(\vec{s})(t) = \int_{\Re^3} K(\mathcal{T}^{-1}(t)(\vec{x}),\vec{s},t)\,\mathcal{B}_1\!\left(\vec{x}\right) d\vec{x} + \int_{(0,1)^3} K\left(\left(\mathcal{T}\circ\mathcal{Q}\right)(t)(\vec{u}),\vec{s},t\right) \frac{\mathcal{B}_0(\vec{u}) + \int_{-\infty}^{\infty} d\tau \mathcal{P}_1(t-\tau) \left( \mathcal{S}(\tau) \cdot \mathcal{P}_0(\vec{u})\right) }{\left|\det D\mathcal{Q}(t)(\vec{u})\right|} d\vec{u} \]
+
+\subsubsection{Measurement: from Sensor Intensity to Data}
+
+The sensor comprises a finite grid of \textit{pixels}, each of which induces shot noise, read noise, and discretization
+(in space, time, and value) on the local sensor intensity. Specifically,
+\[D_{ijk} = \max 0, \min 2^{16}\!-1, \left\lfloor\mathcal{L}_0+\mathcal{L}_1 \cdot \left(\mathcal{R}_{ijk} + \mathcal{C}_{ij} \cdot \left(t_{k,1}-t_{k,0}\right) + \mathcal{E}\cdot\mathrm{Poisson}^{-1}\left[\mathcal{U}_{ijk},\int_{t_{k,0}}^{t_{k,1}} \int_{\alpha_{ij}} f_s(\vec{s})(t)\, d\vec{s}\,dt\right]\right)\right\rfloor\]
+where $\alpha_{ij}$ is the area of $\vec{s}$-space occupied by pixel $i,j$, $\mathcal{U}_{ijk}\in(0,1)$ represents the shot noise, $\mathcal{E} \in (0,1)$ represents the quantum efficiency (average electrons per photon), $\mathcal{C}_{ij}\in\Re_{\ge 0}$ is the dark current of pixel $i,j$ (electrons per second), $\mathcal{R}_{ijk} \in \Re$ represents the read noise, $\mathcal{L} \in \Re_{\ge 0}^2$ is a linear model of the amplifier and A/D, and $D_{ijk} \in 2^{16}$ is a datum (the value of pixel $i,j$ in frame $k$). Further, we assume the priors $\mathcal{R}_{ijk} \sim \mathrm{Gaussian}(0, \mathcal{R}_{ij})$, $\mathcal{R}_{ij} \sim \mbox{L\'evy}(\mathcal{R}_\mu,\mathcal{R}_c)$ ($\mathcal{R}_\mu\approx 0.8$, $\mathcal{R}_c\approx 0.4$ estimated from Andor Neo datasheet), and $\mathcal{U}_{ijk} \sim \mathrm{Uniform}(0,1)$.
+
+\subsection{Induced Constraints}
+
+Given a full complement of $\{D_{ijk}\}$ (where $i \in W$, $j \in H$, and $k \in T$), what conclusions can we draw? Let us begin by introducing new variables $I_{ijk} \in \Re_{\ge 0}$ (the intensity at pixel $(i,j)$ integrated over frame $k$) and $G_{ijk}\in\mathbb{N}$ (the number of photons actually detected within pixel $i,j$ during the interval of frame $k$) to eliminate the special function $\mathrm{Poisson}^{-1}$:
+\[D_{ijk} = \max 0, \min 2^{16}\!-1, \left\lfloor\mathcal{L}_0+\mathcal{L}_1 \cdot \left(\mathcal{R}_{ijk} + \mathcal{C}_{ij} \cdot \left(t_{k,1}-t_{k,0}\right) + \mathcal{E}\cdot G_{ijk}\right)\right\rfloor\]
+%\[\frac{1}{G_{ijk}!} \int_{I_{ijk}}^{\infty} t^{G_{ijk}} e^{-t} dt \leq \mathcal{U}_{ijk} < \frac{1}{(G_{ijk}+1)!} \int_{I_{ijk}}^{\infty} t^{G_{ijk} + 1} e^{-t} dt \]
+\[e^{-I_{ijk}} \sum_{z=0}^{G_{ijk} - 1} \frac{\left(I_{ijk}\right)^z}{z!} \leq \mathcal{U}_{ijk} < e^{-I_{ijk}} \sum_{z=0}^{G_{ijk}} \frac{\left(I_{ijk}\right)^z}{z!}\]
+\[\int_{t_{k,0}}^{t_{k,1}} \int_{\alpha_{ij}} f_s(\vec{s})(t)\, d\vec{s}\,dt=I_{ijk}\]
+
+The first constraint can be solved for the unknowns in $ijk$, $G_{ijk}$ and $\mathcal{R}_{ijk}$ (here assuming $D_{ijk}$ is neither 0 or its maximum value):
+\[D_{ijk} \leq \mathcal{L}_0+\mathcal{L}_1 \cdot \left(\mathcal{R}_{ijk} + \mathcal{C}_{ij} \cdot \left(t_{k,1}-t_{k,0}\right) + \mathcal{E}\cdot G_{ijk}\right) < D_{ijk} + 1\]
+\[\frac{D_{ijk}-\mathcal{L}_0}{\mathcal{L}_1} \leq\mathcal{R}_{ijk} + \mathcal{C}_{ij} \cdot \left(t_{k,1}-t_{k,0}\right) + \mathcal{E}\cdot G_{ijk} < \frac{D_{ijk} - \mathcal{L}_0}{\mathcal{L}_1} + \frac{1}{\mathcal{L}_1}\]
+%\[\frac{D_{ijk}-\mathcal{L}_0}{\mathcal{E}\mathcal{L}_1} - \frac{\mathcal{R}_{ijk} + \mathcal{C}_{ij} \cdot (t_{k,1} - t_{k,0})}{\mathcal{E}} \leq G_{ijk} < \frac{D_{ijk} - \mathcal{L}_0}{\mathcal{E}\mathcal{L}_1} - \frac{\mathcal{R}_{ijk} + \mathcal{C}_{ij} \cdot (t_{k,1} - t_{k,0})}{\mathcal{E}} + \frac{1}{\mathcal{E}\mathcal{L}_1}\]
+\[\frac{D_{ijk}-\mathcal{L}_0 - \mathcal{L}_1 \mathcal{C}_{ij} \cdot (t_{k,1} - t_{k,0})}{\mathcal{E}\mathcal{L}_1} \leq G_{ijk} + \frac{\mathcal{R}_{ijk}}{\mathcal{E}} < \frac{D_{ijk}-\mathcal{L}_0 - \mathcal{L}_1 \mathcal{C}_{ij} \cdot (t_{k,1} - t_{k,0})}{\mathcal{E}\mathcal{L}_1} + \frac{1}{\mathcal{E}\mathcal{L}_1}\]
 
 \end{document}
 
